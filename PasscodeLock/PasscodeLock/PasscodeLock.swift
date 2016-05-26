@@ -27,7 +27,7 @@ public class PasscodeLock: PasscodeLockType {
     }
     
     private var lockState: PasscodeLockStateType
-    private lazy var passcode = [String]()
+    public private (set) lazy var passcode = [String]()
     
     public init(state: PasscodeLockStateType, configuration: PasscodeLockConfigurationType) {
         
