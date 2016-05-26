@@ -17,7 +17,17 @@ struct EnterPasscodeState: PasscodeLockStateType {
     let isCancellableAction: Bool
     var isTouchIDAllowed = true
     
-    private var inccorectPasscodeAttempts = 0
+    static let incorrectPasscodeAttemptsKey = "incorrectPasscodeAttempts"
+    static var incorrectPasscodeAttempts: Int {
+        get {
+            return NSUserDefaults.standardUserDefaults().integerForKey(incorrectPasscodeAttemptsKey)
+        }
+        set {
+            NSUserDefaults.standardUserDefaults().setInteger(newValue, forKey: incorrectPasscodeAttemptsKey)
+        }
+    }
+    
+    
     private var isNotificationSent = false
     
     init(allowCancellation: Bool = false) {
@@ -33,27 +43,31 @@ struct EnterPasscodeState: PasscodeLockStateType {
             return
         }
         
+        var incorrectPasscodeAttempts = EnterPasscodeState.incorrectPasscodeAttempts
         if passcode == currentPasscode {
             
             lock.delegate?.passcodeLockDidSucceed(lock)
-            
+            incorrectPasscodeAttempts = 0
         } else {
             
-            inccorectPasscodeAttempts += 1
+            incorrectPasscodeAttempts += 1
             
-            if inccorectPasscodeAttempts >= lock.configuration.maximumInccorectPasscodeAttempts {
+            if incorrectPasscodeAttempts >= lock.configuration.maximumInccorectPasscodeAttempts {
                 
                 postNotification()
+                incorrectPasscodeAttempts = 0
             }
             
             lock.delegate?.passcodeLockDidFail(lock)
         }
+        
+        EnterPasscodeState.incorrectPasscodeAttempts = incorrectPasscodeAttempts
     }
     
     private mutating func postNotification() {
         
         guard !isNotificationSent else { return }
-            
+        
         let center = NSNotificationCenter.defaultCenter()
         
         center.postNotificationName(PasscodeLockIncorrectPasscodeNotification, object: nil)
