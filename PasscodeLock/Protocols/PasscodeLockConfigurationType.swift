@@ -16,4 +16,5 @@ public protocol PasscodeLockConfigurationType {
     var shouldRequestTouchIDImmediately: Bool {get}
     var touchIdReason: String? {get set}
     var maximumInccorectPasscodeAttempts: Int {get}
+    var touchIDAuthenticationAllowableReuseDuration: NSTimeInterval {get}
 }
