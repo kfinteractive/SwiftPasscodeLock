@@ -27,9 +27,6 @@ struct EnterPasscodeState: PasscodeLockStateType {
         }
     }
     
-    
-    private var isNotificationSent = false
-    
     init(allowCancellation: Bool = false) {
         
         isCancellableAction = allowCancellation
@@ -66,12 +63,8 @@ struct EnterPasscodeState: PasscodeLockStateType {
     
     private mutating func postNotification() {
         
-        guard !isNotificationSent else { return }
-        
         let center = NSNotificationCenter.defaultCenter()
         
         center.postNotificationName(PasscodeLockIncorrectPasscodeNotification, object: nil)
-        
-        isNotificationSent = true
     }
 }
