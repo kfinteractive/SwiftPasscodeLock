@@ -9,7 +9,7 @@
 import Foundation
 
 class FakePasscodeLockConfiguration: PasscodeLockConfigurationType {
-    
+    let touchIDAuthenticationAllowableReuseDuration: TimeInterval = 0
     let repository: PasscodeRepositoryType
     let passcodeLength = 4
     var isTouchIDAllowed = false
