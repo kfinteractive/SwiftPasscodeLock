@@ -8,20 +8,19 @@
 
 import XCTest
 
-class NotificaionObserver: NSObject {
+class NotificationObserver: NSObject {
     
     var called = false
     var callCounter = 0
     
-    func observe(_ notification: String) {
+    func observe(_ notification: Notification.Name) {
         
         let center = NotificationCenter.default
         
-        center.addObserver(self, selector: #selector(NotificaionObserver.handle(_:)), name: NSNotification.Name(rawValue: notification), object: nil)
+        center.addObserver(self, selector: #selector(handle(_:)), name: notification, object: nil)
     }
     
     func handle(_ notification: Notification) {
-        
         called = true
         callCounter += 1
     }
@@ -41,6 +40,7 @@ class EnterPasscodeStateTests: XCTestCase {
         let config = FakePasscodeLockConfiguration(repository: repository)
         
         passcodeState = EnterPasscodeState()
+        EnterPasscodeState.incorrectPasscodeAttempts = 0
         passcodeLock = FakePasscodeLock(state: passcodeState, configuration: config)
     }
     
@@ -86,9 +86,9 @@ class EnterPasscodeStateTests: XCTestCase {
     
     func testIncorrectPasscodeNotification() {
         
-        let observer = NotificaionObserver()
+        let observer = NotificationObserver()
         
-        observer.observe(PasscodeLockIncorrectPasscodeNotification)
+        observer.observe(.passcodeLockIncorrectPasscode)
         
         passcodeState.acceptPasscode(["0"], fromLock: passcodeLock)
         passcodeState.acceptPasscode(["0"], fromLock: passcodeLock)
@@ -99,15 +99,14 @@ class EnterPasscodeStateTests: XCTestCase {
     
     func testIncorrectPasscodeSendNotificationOnce() {
         
-        let observer = NotificaionObserver()
+        let observer = NotificationObserver()
         
-        observer.observe(PasscodeLockIncorrectPasscodeNotification)
-        
-        passcodeState.acceptPasscode(["0"], fromLock: passcodeLock)
-        passcodeState.acceptPasscode(["0"], fromLock: passcodeLock)
-        passcodeState.acceptPasscode(["0"], fromLock: passcodeLock)
+        observer.observe(.passcodeLockIncorrectPasscode)
         
         passcodeState.acceptPasscode(["0"], fromLock: passcodeLock)
+        passcodeState.acceptPasscode(["0"], fromLock: passcodeLock)
+        passcodeState.acceptPasscode(["0"], fromLock: passcodeLock)
+        
         passcodeState.acceptPasscode(["0"], fromLock: passcodeLock)
         passcodeState.acceptPasscode(["0"], fromLock: passcodeLock)
 
