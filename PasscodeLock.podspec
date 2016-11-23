@@ -7,7 +7,7 @@ s.homepage = 'https://github.com/velikanov/SwiftPasscodeLock'
 s.authors = { 'Yanko Dimitrov' => '', 'Chris Ziogas' => '', }
 s.source = { :git => 'https://github.com/velikanov/SwiftPasscodeLock.git' }
 
-s.ios.deployment_target = '8.0'
+s.ios.deployment_target = '9.0'
 
 s.source_files = 'PasscodeLock/*.{h,swift}',
 				 'PasscodeLock/*/*.{swift}'
