@@ -25,6 +25,7 @@ public protocol PasscodeLockType {
 public protocol PasscodeLockTypeDelegate: class {
     
     func passcodeLockDidSucceed(_ lock: PasscodeLockType)
+    func passcodeLockTouchIDAuthenticationFailed(_ lock: PasscodeLockType)
     func passcodeLockDidFail(_ lock: PasscodeLockType)
     func passcodeLockDidChangeState(_ lock: PasscodeLockType)
     func passcodeLock(_ lock: PasscodeLockType, addedSignAtIndex index: Int)

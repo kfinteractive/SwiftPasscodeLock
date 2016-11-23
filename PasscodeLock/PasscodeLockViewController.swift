@@ -97,7 +97,6 @@ open class PasscodeLockViewController: UIViewController, PasscodeLockTypeDelegat
         super.viewDidAppear(animated)
         
         if shouldTryToAuthenticateWithBiometrics && passcodeConfiguration.shouldRequestTouchIDImmediately {
-        
             authenticateWithBiometrics()
         }
     }
@@ -167,6 +166,7 @@ open class PasscodeLockViewController: UIViewController, PasscodeLockTypeDelegat
         if passcodeLock.isTouchIDAllowed {
             
             passcodeLock.authenticateWithBiometrics()
+            touchIDButton?.isEnabled = false
         }
     }
     
@@ -248,6 +248,10 @@ open class PasscodeLockViewController: UIViewController, PasscodeLockTypeDelegat
         dismissPasscodeLock(lock, completionHandler: { [weak self] _ in
             self?.successCallback?(lock)
         })
+    }
+
+    open func passcodeLockTouchIDAuthenticationFailed(_ lock: PasscodeLockType) {
+        touchIDButton?.isEnabled = true
     }
     
     open func passcodeLockDidFail(_ lock: PasscodeLockType) {

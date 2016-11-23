@@ -76,10 +76,7 @@ open class PasscodeLock: PasscodeLockType {
                 reason = localizedStringFor("PasscodeLockTouchIDReason", comment: "TouchID authentication reason")
             }
         
-        if #available(iOS 9.0, *) {
-            context.touchIDAuthenticationAllowableReuseDuration = configuration.touchIDAuthenticationAllowableReuseDuration
-        }
-        
+        context.touchIDAuthenticationAllowableReuseDuration = configuration.touchIDAuthenticationAllowableReuseDuration
         context.localizedFallbackTitle = localizedStringFor("PasscodeLockTouchIDButton", comment: "TouchID authentication fallback button")
         
         context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) {

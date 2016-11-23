@@ -11,42 +11,42 @@ import PasscodeLock
 
 class CustomPasscodeLockPresenter: PasscodeLockPresenter {
     
-    private let notificationCenter: NSNotificationCenter
+    fileprivate let notificationCenter: NotificationCenter
     
-    private let splashView: UIView
+    fileprivate let splashView: UIView
     
     var isFreshAppLaunch = true
     
     init(mainWindow window: UIWindow?, configuration: PasscodeLockConfigurationType) {
         
-        notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter = NotificationCenter.default
         
         splashView = LockSplashView()
         
         // TIP: you can set your custom viewController that has added functionality in a custom .xib too
-        let passcodeLockVC = PasscodeLockViewController(state: .EnterPasscode, configuration: configuration)
+        let passcodeLockVC = PasscodeLockViewController(state: .enterPasscode, configuration: configuration)
         
         super.init(mainWindow: window, configuration: configuration, viewController: passcodeLockVC)
         
         // add notifications observers
         notificationCenter.addObserver(
             self,
-            selector: "applicationDidLaunched",
-            name: UIApplicationDidFinishLaunchingNotification,
+            selector: #selector(applicationDidLaunched),
+            name: .UIApplicationDidFinishLaunching,
             object: nil
         )
         
         notificationCenter.addObserver(
             self,
-            selector: "applicationDidEnterBackground",
-            name: UIApplicationDidEnterBackgroundNotification,
+            selector: #selector(applicationDidEnterBackground),
+            name: .UIApplicationDidEnterBackground,
             object: nil
         )
         
         notificationCenter.addObserver(
             self,
-            selector: "applicationDidBecomeActive",
-            name: UIApplicationDidBecomeActiveNotification,
+            selector: #selector(applicationDidBecomeActive),
+            name: .UIApplicationDidBecomeActive,
             object: nil
         )
     }
@@ -83,19 +83,19 @@ class CustomPasscodeLockPresenter: PasscodeLockPresenter {
         removeSplashView()
     }
     
-    private func addSplashView() {
+    fileprivate func addSplashView() {
         
         // add splashView for iOS app background swithcer
         if isPasscodePresented {
             passcodeLockVC.view.addSubview(splashView)
         } else {
-            if let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
                 appDelegate.window?.addSubview(splashView)
             }
         }
     }
     
-    private func removeSplashView() {
+    fileprivate func removeSplashView() {
         
         // remove splashView for iOS app background swithcer
         splashView.removeFromSuperview()

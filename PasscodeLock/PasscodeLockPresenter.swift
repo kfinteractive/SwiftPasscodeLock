@@ -30,7 +30,7 @@ open class PasscodeLockPresenter {
     public init(mainWindow window: UIWindow?, configuration: PasscodeLockConfigurationType, viewController: PasscodeLockViewController) {
         
         mainWindow = window
-        mainWindow?.windowLevel = 1
+        mainWindow?.windowLevel = UIWindowLevelStatusBar - 1
         passcodeConfiguration = configuration
         
         passcodeLockVC = viewController
