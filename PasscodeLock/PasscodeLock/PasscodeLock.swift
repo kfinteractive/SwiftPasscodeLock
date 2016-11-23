@@ -93,6 +93,8 @@ open class PasscodeLock: PasscodeLockType {
             if success {
                 EnterPasscodeState.incorrectPasscodeAttempts = 0
                 self.delegate?.passcodeLockDidSucceed(self)
+            } else {
+                self.delegate?.passcodeLockTouchIDAuthenticationFailed(self)
             }
         }
     }
