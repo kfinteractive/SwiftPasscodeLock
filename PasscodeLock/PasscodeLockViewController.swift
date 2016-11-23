@@ -155,7 +155,7 @@ open class PasscodeLockViewController: UIViewController, PasscodeLockTypeDelegat
     }
     
     @IBAction func touchIDButtonTap(_ sender: UIButton) {
-        
+        touchIDButton?.isEnabled = false
         passcodeLock.authenticateWithBiometrics()
     }
     
@@ -164,9 +164,8 @@ open class PasscodeLockViewController: UIViewController, PasscodeLockTypeDelegat
         guard passcodeConfiguration.repository.hasPasscode else { return }
 
         if passcodeLock.isTouchIDAllowed {
-            
-            passcodeLock.authenticateWithBiometrics()
             touchIDButton?.isEnabled = false
+            passcodeLock.authenticateWithBiometrics()
         }
     }
     

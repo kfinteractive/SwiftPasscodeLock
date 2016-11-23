@@ -65,8 +65,11 @@ open class PasscodeLock: PasscodeLockType {
     
     open func authenticateWithBiometrics() {
         
-        guard isTouchIDAllowed else { return }
-        
+        guard isTouchIDAllowed else {
+            self.delegate?.passcodeLockTouchIDAuthenticationFailed(self)
+            return
+        }
+
         let context = LAContext()
         
         let reason: String
