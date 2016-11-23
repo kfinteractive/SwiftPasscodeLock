@@ -30,7 +30,7 @@ open class PasscodeLockPresenter {
     public init(mainWindow window: UIWindow?, configuration: PasscodeLockConfigurationType, viewController: PasscodeLockViewController) {
         
         mainWindow = window
-        mainWindow?.windowLevel = UIWindowLevelStatusBar - 1
+        mainWindow?.windowLevel = 1
         passcodeConfiguration = configuration
         
         passcodeLockVC = viewController
@@ -64,7 +64,7 @@ open class PasscodeLockPresenter {
         guard !isPasscodePresented else { return }
         
         isPasscodePresented = true
-        passcodeLockWindow.windowLevel = 2
+        passcodeLockWindow.windowLevel = UIWindowLevelStatusBar - 1
         
         toggleKeyboardVisibility(hide: true)
         
