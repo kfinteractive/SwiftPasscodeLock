@@ -22,8 +22,8 @@ open class PasscodeLock: PasscodeLockType {
         return lockState
     }
     
-    open var isTouchIDAllowed: Bool {
-        return isTouchIDEnabled() && configuration.isTouchIDAllowed && lockState.isTouchIDAllowed
+    open var isBiometricAuthenticationAllowed: Bool {
+        return isBiometricAuthenticationEnabled() && configuration.isBiometricAuthenticationAllowed && lockState.isBiometricAuthenticationAllowed
     }
     
     fileprivate var lockState: PasscodeLockStateType
@@ -65,7 +65,7 @@ open class PasscodeLock: PasscodeLockType {
     
     open func authenticateWithBiometrics() {
         
-        guard isTouchIDAllowed else {
+        guard isBiometricAuthenticationAllowed else {
             self.delegate?.passcodeLockTouchIDAuthenticationFailed(self)
             return
         }
@@ -102,7 +102,7 @@ open class PasscodeLock: PasscodeLockType {
         }
     }
     
-    fileprivate func isTouchIDEnabled() -> Bool {
+    fileprivate func isBiometricAuthenticationEnabled() -> Bool {
         
         let context = LAContext()
         

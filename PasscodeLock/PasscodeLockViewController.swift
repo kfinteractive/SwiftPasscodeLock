@@ -106,7 +106,7 @@ open class PasscodeLockViewController: UIViewController, PasscodeLockTypeDelegat
         titleLabel?.text = passcodeLock.state.title
         descriptionLabel?.text = passcodeLock.state.description
         cancelButton?.isHidden = !passcodeLock.state.isCancellableAction
-        touchIDButton?.isHidden = !passcodeLock.isTouchIDAllowed
+        touchIDButton?.isHidden = !passcodeLock.isBiometricAuthenticationAllowed
     }
     
     // MARK: - Events
@@ -123,14 +123,14 @@ open class PasscodeLockViewController: UIViewController, PasscodeLockTypeDelegat
         notificationCenter?.removeObserver(self, name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
     }
     
-    open func appWillEnterForegroundHandler(_ notification: Notification) {
+    @objc open func appWillEnterForegroundHandler(_ notification: Notification) {
         
         if passcodeConfiguration.shouldRequestTouchIDImmediately {
             authenticateWithBiometrics()
         }
     }
     
-    open func appDidEnterBackgroundHandler(_ notification: Notification) {
+    @objc open func appDidEnterBackgroundHandler(_ notification: Notification) {
         
         shouldTryToAuthenticateWithBiometrics = false
     }
@@ -163,7 +163,7 @@ open class PasscodeLockViewController: UIViewController, PasscodeLockTypeDelegat
         
         guard passcodeConfiguration.repository.hasPasscode else { return }
 
-        if passcodeLock.isTouchIDAllowed {
+        if passcodeLock.isBiometricAuthenticationAllowed {
             touchIDButton?.isEnabled = false
             passcodeLock.authenticateWithBiometrics()
         }
@@ -174,12 +174,12 @@ open class PasscodeLockViewController: UIViewController, PasscodeLockTypeDelegat
         // if presented as modal
         if presentingViewController?.presentedViewController == self {
             
-            dismiss(animated: animateOnDismiss, completion: { [weak self] _ in
+            dismiss(animated: animateOnDismiss) { [weak self]  in
                 
                 self?.dismissCompletionCallback?()
                 
                 completionHandler?()
-            })
+            }
             
             return
             
@@ -241,12 +241,12 @@ open class PasscodeLockViewController: UIViewController, PasscodeLockTypeDelegat
     // MARK: - PasscodeLockDelegate
     
     open func passcodeLockDidSucceed(_ lock: PasscodeLockType) {
-        
+
         deleteSignButton?.isEnabled = true
         animatePlaceholders(placeholders, toState: .inactive)
-        dismissPasscodeLock(lock, completionHandler: { [weak self] _ in
+        dismissPasscodeLock(lock) { [weak self] in
             self?.successCallback?(lock)
-        })
+        }
     }
 
     open func passcodeLockTouchIDAuthenticationFailed(_ lock: PasscodeLockType) {

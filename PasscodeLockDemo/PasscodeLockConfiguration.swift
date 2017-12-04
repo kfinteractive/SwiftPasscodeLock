@@ -12,7 +12,7 @@ import PasscodeLock
 struct PasscodeLockConfiguration: PasscodeLockConfigurationType {
     let repository: PasscodeRepositoryType
     let passcodeLength = 4
-    var isTouchIDAllowed = true
+    var isBiometricAuthenticationAllowed = true
     let shouldRequestTouchIDImmediately = true
     let maximumInccorectPasscodeAttempts = -1
     var touchIdReason: String? = nil
